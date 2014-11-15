@@ -1,9 +1,16 @@
 ﻿package  {
 	
 	import flash.display.MovieClip;
+	import flash.events.Event;
+
 	
 	
 	public class aoz extends MovieClip {
+		
+		// I suppose the stuff I put in here are class oriented variables. Not belonging to specific functions
+		
+		var messageFromMovieClip:String;
+		
 		
 		
 		public function aoz() {
@@ -25,8 +32,18 @@
 			
 			// Now how could i communicate a variable back here from that object? 
 			
+			screen1.addEventListener(startButton.CUSTOM_EVENT, updateMessageFromMovieClip);
+			
 			
 		}
+		
+		function updateMessageFromMovieClip(){
+			
+			messageFromMovieClip = "Meow";
+			trace(messageFromMovieClip);
+			}
+		
+		
 	}
 	
 }
