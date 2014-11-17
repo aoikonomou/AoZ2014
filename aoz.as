@@ -30,18 +30,18 @@
 
 			// Now how could i communicate a variable back here from that object? 
 
-			screen1.addEventListener(startButton.CUSTOM_EVENT, updateMessageFromMovieClip); // When I click on that button on that object I need it to know about it and do soemthing
+			screen1.addEventListener("test", updateMessageFromMovieClip); // When I click on that button on that object I need it to know about it and do soemthing
 
-			getRidofstartScreen();
 
 		}
 
 		// This is what the button click will do (but it is not working. What would happen if it did, well, I want it to update a variable on my master programme and delete itself and then load another MovieClip which will be of the main game scene.
 
-		function updateMessageFromMovieClip() {
+		function updateMessageFromMovieClip(test) {
 
-			messageFromMovieClip = "Meow";
-			trace(messageFromMovieClip);
+			var messageFromMovieClipEvent = test;
+			trace(messageFromMovieClipEvent);
+			getRidofstartScreen();
 			
 		}
 
