@@ -42,6 +42,7 @@
 			var messageFromMovieClipEvent = test;
 			trace(messageFromMovieClipEvent);
 			getRidofstartScreen();
+			startGame();
 			
 		}
 
@@ -52,6 +53,15 @@
 			// Also remember not to reference it anywhere else. If you want to test if its still on the stage somewhere use the .stage property.
 
 		}
+		
+		
+		function startGame(){
+			
+			var screen2:gameScreen = new gameScreen;
+			addChild(screen2);
+			
+			
+			}
 
 	}
 
