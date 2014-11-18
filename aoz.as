@@ -8,10 +8,7 @@
 		// I suppose the stuff I put in here are class oriented variables. Not belonging to specific functions
 		// What is a class variable? Well, good question. An object variable that is more general to the object that any of its functions. Something like it's height for example if it was a human
 
-		var messageFromMovieClip: String;
 		var screen1: startScreen = new startScreen; // I 've created a MovieClip that contains all the stuff for the first screen. I am instantiating it here but I need to add to the stage also (in the main function)
-
-
 
 		public function aoz() {
 			// constructor code
@@ -32,7 +29,6 @@
 
 			screen1.addEventListener("test", updateMessageFromMovieClip); // When I click on that button on that object I need it to know about it and do soemthing
 
-
 		}
 
 		// This is what the button click will do (but it is not working. What would happen if it did, well, I want it to update a variable on my master programme and delete itself and then load another MovieClip which will be of the main game scene.
@@ -44,8 +40,6 @@
 			getRidofstartScreen();
 			
 		}
-
-
 
 		function getRidofstartScreen() {
 
