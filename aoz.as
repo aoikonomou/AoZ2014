@@ -10,6 +10,10 @@
 
 		var screen1: startScreen = new startScreen; // I 've created a MovieClip that contains all the stuff for the first screen. I am instantiating it here but I need to add to the stage also (in the main function)
 
+		// Screen resolution related variables (for multiple devices, but what is the target device? Actually, desktop for once)
+		var screenX:int = 800;
+		var screenY:int = 600;
+		
 		public function aoz() {
 			// constructor code
 
@@ -42,7 +46,6 @@
 		}
 
 		function getRidofstartScreen() {
-
 
 			removeChild(screen1);
 			screen1 = null;

@@ -3,10 +3,10 @@
 	import flash.display.MovieClip;
 	
 	
-	public class mainGame extends MovieClip {
+	public class gameScreen extends MovieClip {
 		
 		
-		public function mainGame() {
+		public function gameScreen() {
 			
 
 		// Create floor tiles
