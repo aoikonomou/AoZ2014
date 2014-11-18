@@ -5,11 +5,11 @@
 	
 	public class tile extends MovieClip {
 		
-		var type:int;
+		/*var type:int;
 		var sizeX:int;
 		var sizeY:int;
 		var posX:int;
-		var posY:int;
+		var posY:int;*/
 		
 		public function tile() {
 			// constructor code

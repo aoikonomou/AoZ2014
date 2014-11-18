@@ -11,8 +11,10 @@
 	public class gameScreen extends MovieClip
 	{
 
-		var tileArray:Array = [];
+		var tileArray:Array = new Array();
 		var tileDistance:int = 1;
+		
+		
 
 		// calculate the number of tiles dependant on the size of the screen
 
@@ -23,18 +25,27 @@
 
 		public function gameScreen()
 		{
+			
+			trace(tilesAcross);
+			trace(tilesAlong);
+			
 			// Create floor tiles
 			//Instantiate new grass tiles
 			for (var i=0; i<=tilesAcross; i++)
 			{
+				tileArray.push(new Array());
 				for (var j=0; j<=tilesAlong; j++)
 				{
 
-					tileArray[i,j] = new tile  ;
-					tileArray[i,j].x +=  tileDistance;
-					tileArray[i,j].y +=  tileDistance;
+					tileArray[i][j] = new tile;
+					
+					tileArray[i][j].x += tileDistance;
+					tileArray[i][j].y += tileDistance;
 					tileDistance +=  aoz.tileSize;
-					addChild(tileArray[i,j]);
+					addChild(tileArray[i][j]);
+					
+					trace("blah");
+					trace(tileArray[i][j]);
 
 				}
 			}
