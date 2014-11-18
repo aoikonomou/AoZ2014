@@ -3,32 +3,43 @@
 
 	import flash.display.MovieClip;
 	import tile;
+	import flash.display.InteractiveObject;
+	//import flash.Math;
+
 
 
 	public class gameScreen extends MovieClip
 	{
 
-		var tileArray:Array =[];
+		var tileArray:Array = [];
+		var tileDistance:int = 1;
+
+		// calculate the number of tiles dependant on the size of the screen
+
+		var tilesAcross:int = Math.abs(aoz.screenXsize / aoz.tileSize);
+		var tilesAlong:int = Math.abs(aoz.screenYsize / aoz.tileSize);
+		var totalTiles:int = tilesAcross * tilesAlong;
+
 
 		public function gameScreen()
 		{
-
-
-			for (var i=0; i<800; i++)
+			// Create floor tiles
+			//Instantiate new grass tiles
+			for (var i=0; i<=tilesAcross; i++)
 			{
+				for (var j=0; j<=tilesAlong; j++)
+				{
 
-				//Instantiate new grass tiles
+					tileArray[i,j] = new tile  ;
+					tileArray[i,j].x +=  tileDistance;
+					tileArray[i,j].y +=  tileDistance;
+					tileDistance +=  aoz.tileSize;
+					addChild(tileArray[i,j]);
 
-
-			 tileArray[i] = new tile;
-				tileArray[i].x = i * 5;
-				addChild(tileArray[i]);
-
+				}
 			}
 
-
-
-			// Create floor tiles
+			
 			// Create block tiles
 			// Create pickup tiles
 			// Create enemy tiles
@@ -38,6 +49,13 @@
 
 			// 
 		}
+
+		function setTileSize(size)
+		{
+
+
+		}
+
 	}
 
 }

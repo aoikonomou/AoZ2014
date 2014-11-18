@@ -11,8 +11,9 @@
 		var screen1: startScreen = new startScreen; // I 've created a MovieClip that contains all the stuff for the first screen. I am instantiating it here but I need to add to the stage also (in the main function)
 
 		// Screen resolution related variables (for multiple devices, but what is the target device? Actually, desktop for once)
-		var screenX:int = 800;
-		var screenY:int = 600;
+		static var screenXsize:int = 800; // static keyword makes it accessible directly from other objects
+		static var screenYsize:int = 600;
+		static var tileSize:int = 64;
 		
 		public function aoz() {
 			// constructor code
