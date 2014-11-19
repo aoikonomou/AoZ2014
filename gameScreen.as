@@ -15,10 +15,20 @@
 		var tileDistanceY:int = 1;
 
 		// calculate the number of tiles dependant on the size of the screen
-		
+
 		var tilesColumns:int = Math.abs(aoz.screenXsize / aoz.tileSize);
 		var tilesRows:int = Math.abs(aoz.screenYsize / aoz.tileSize);
 		// var totalTiles:int = tilesRows * tilesColumns;
+
+		// Different types of tiles to be created
+		var type:Array = [0,1,2,3,4,5];
+
+		// 0 = grass
+		// 1 = block
+		// 2 = zombie
+		// 3 = pickup
+		// 4 = hero
+		// 5 = exit
 
 
 		public function gameScreen()
@@ -36,9 +46,11 @@
 				for (var j=0; j<tilesRows; j++)
 				{
 
+					var tileType:int = 0;// This is the grass tile. Just making it readable instead of using numbers to pass the type to the objects when they are created below
+
 					// Bellow I am creating a single kind of green tile. I need to create different types of tiles in the next version.
 
-					tileArray[i][j] = new tile  ;
+					tileArray[i][j] = new tile(tileType,i,j);
 					tileArray[i][j].width = aoz.tileSize;
 					tileArray[i][j].height = aoz.tileSize;
 					tileArray[i][j].x +=  tileDistanceX;
@@ -90,8 +102,28 @@
 			trace(tilesRows);
 			trace(tilesColumns);
 
+			// Making the type of the tile easily readable in the code instead of assigning a number
+			var tileType = 4;// 4 For hero
+
+
+
+			// Removing the tile grass tile where the hero tile will go. Probably can do better that this in a next version by not making it at all a grass tile at the beggining.
+
+			var heroArrayPosX=tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].x;
+			var heroArrayPosY=tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].y;
+
+			removeChild(tileArray[Math.round(tilesColumns/2)-1][tilesRows-1]);
+			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1] = null;
+
+
 			// Assigning hero colour to a tile
+			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1] = new tile(tileType,heroArrayPosX,heroArrayPosX);
+			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].x =heroArrayPosX;
+			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].y =heroArrayPosY;
+			addChild(tileArray[Math.round(tilesColumns/2)-1][tilesRows-1]);
 			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].transform.colorTransform = heroColor;
+
+			// position the tile at the right spot
 
 
 		}
