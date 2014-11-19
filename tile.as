@@ -9,8 +9,6 @@
 	public class tile extends MovieClip
 	{
 
-
-
 		var sizeX:int;
 		var sizeY:int;
 		
