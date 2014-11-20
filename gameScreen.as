@@ -47,7 +47,7 @@
 			createGrassTiles();// Instantiate new grass tiles
 			// removeGrassTiles(); // This works
 			createExitTile();
-			//createMainPath();
+			createMainPath();
 			createPlayerTile();
 		}
 
@@ -97,6 +97,33 @@
 			}
 		}
 
+		
+		public function createMainPath(){
+			
+			
+			// start from the bottom. hmmm, or, actually, why not, start from the top. How many iterations. As many as rows
+			
+			
+			var randomBegginingTile= 1 + Math.round(Math.random()*(tilesColumns-2)); // Random starting point
+			var previousTile = randomBegginingTile; // To update as the new starting position for every iteration of the loop
+			
+				trace("random start tile: " + randomBegginingTile);
+				tileArray[randomBegginingTile][0].x = -20;
+			
+			
+			for (var i=1;i<tilesRows;i++){
+				
+				var randomNextTile = (previousTile-1) + Math.round(Math.random()*(2));
+				previousTile = randomNextTile;
+				tileArray[randomNextTile][i].x = -20;
+				
+				}
+			
+			
+			
+			}
+		
+		
 		public function createExitTile()
 		{
 
@@ -167,7 +194,6 @@
 
 		public function checkTilesAroundHero()
 		{
-
 
 			// First populate the checking array with the tiles around the hero
 
