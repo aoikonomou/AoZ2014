@@ -4,7 +4,10 @@
 	import flash.display.MovieClip;
 	import tile;
 	import flash.display.InteractiveObject;
-	import flash.geom.ColorTransform;// To be able to change tile colours.
+	import flash.geom.ColorTransform;
+	import flashx.textLayout.operations.InsertTextOperation;
+
+// To be able to change tile colours.
 
 
 	public class gameScreen extends MovieClip
@@ -40,8 +43,6 @@
 
 		public function gameScreen()
 		{
-			trace(tilesRows);
-			trace(tilesColumns);
 
 			createGrassTiles();// Instantiate new grass tiles
 			// removeGrassTiles(); // This works
@@ -100,21 +101,25 @@
 
 			// Making the type of the tile easily readable in the code instead of assigning a number
 			var tileType = 5;// 5 For exit
-
+			
+			// Finding the position of the exit tile on the array
 			currentExitPosinArrayColumn = Math.round(tilesColumns/2)-1; // Halfway between the columns
 			currentExitPosinArrayRow = 0; // Top row
 			
+			// X/Y position on screen of original tile to be replaced by exit tile
+			var currentExitPosX:int = tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow].x;
+			var currentExitPosY:int = tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow].y;
 			
-			removeChild(tileArray[currentExitPosinArrayColumn][0]);
-			//tileArray[Math.round(tilesColumns/2)-1][tilesRows-1] = null;
-
+			// Remove original tile. To be replaced with exit tile below
+			removeChild(tileArray[currentExitPosinArrayColumn][0]); // Remove from screen
+			tileArray[currentExitPosinArrayColumn][0] = null; // Remove reference to object for garbage collector to collect it
 
 			// Assigning exit colour to a tile
 			
-			tileArray[Math.round(tilesColumns/2)-1][0] = new tile(tileType,currentExitPosinArrayColumn,currentExitPosinArrayRow);
-			tileArray[Math.round(tilesColumns/2)-1][0].x =currentExitPosinArrayColumn;
-			tileArray[Math.round(tilesColumns/2)-1][0].y =currentExitPosinArrayRow;
-			addChild(tileArray[Math.round(tilesColumns/2)-1][0]);
+			tileArray[currentExitPosinArrayColumn][0] = new tile(tileType,currentExitPosinArrayColumn,currentExitPosinArrayRow);
+			tileArray[currentExitPosinArrayColumn][0].x = currentExitPosX;
+			tileArray[currentExitPosinArrayColumn][0].y = currentExitPosY;
+			addChild(tileArray[currentExitPosinArrayColumn][0]);
 			tileArray[Math.round(tilesColumns/2)-1][0].transform.colorTransform = exitColor;
 
 			// position the tile at the right spot
@@ -133,27 +138,23 @@
 
 			// Removing the tile grass tile where the hero tile will go. Probably can do better that this in a next version by not making it at all a grass tile at the beggining.
 
-			var heroArrayPosX=tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].x;
-			var heroArrayPosY=tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].y;
+			// Finding the position of the exit tile on the array
+			currentHeroPosinArrayColumn = Math.round(tilesColumns/2)-1; // Halfway between the columns
+			currentHeroPosinArrayRow = tilesRows-1; // Top row
 			
+			// X/Y position on screen of original tile to be replaced by exit tile
+			var currentHerotPosX:int = tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].x;
+			var currentHeroPosY:int = tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].y;
 			
-			heroArrayPosX=tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].x = 100;
-			heroArrayPosY=tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].y = 200;
-			
-			trace(heroArrayPosX);
-			trace(heroArrayPosY);
-			
-			trace(tilesRows);
-
-
-			removeChild(tileArray[Math.round(tilesColumns/2)-1][tilesRows-1]);
-			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1] = null;
+			// Remove original tile. To be replaced with exit tile below
+			removeChild(tileArray[currentHeroPosinArrayColumn][0]); // Remove from screen
+			tileArray[currentHeroPosinArrayColumn][0] = null; // Remove reference to object for garbage collector to collect it
 
 			
 			// Assigning hero colour to a tile
-			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1] = new tile(tileType,heroArrayPosX,heroArrayPosX);
-			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].x =heroArrayPosX;
-			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].y =heroArrayPosY;
+			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1] = new tile(tileType,currentHeroPosinArrayColumn,currentHeroPosinArrayRow);
+			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].x =currentHerotPosX;
+			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].y =currentHerotPosY;
 			addChild(tileArray[Math.round(tilesColumns/2)-1][tilesRows-1]);
 			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].transform.colorTransform = heroColor;
 
