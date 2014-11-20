@@ -7,7 +7,7 @@
 	import flash.geom.ColorTransform;
 	import flashx.textLayout.operations.InsertTextOperation;
 
-// To be able to change tile colours.
+	// To be able to change tile colours.
 
 
 	public class gameScreen extends MovieClip
@@ -35,11 +35,11 @@
 		// This is to keep track of where the hero tile is in the array during the game
 		var currentHeroPosinArrayColumn:int;
 		var currentHeroPosinArrayRow:int;
-		
+
 		// This is to keep track of where the exit tile is in the array during the game
 		var currentExitPosinArrayColumn:int;
 		var currentExitPosinArrayRow:int;
-		
+
 
 		public function gameScreen()
 		{
@@ -62,8 +62,12 @@
 
 					// Bellow I am creating a single kind of green tile. I need to create different types of tiles in the next version.
 					tileArray[i][j] = new tile(tileType,i,j);
-					tileArray[i][j].width = aoz.tileSize;
-					tileArray[i][j].height = aoz.tileSize;
+					
+					setTileSize(i,j); // Because many functions will be using this I don't want to keep rewriting so I made a function for it
+					
+					// tileArray[i][j].width = aoz.tileSize;
+					// tileArray[i][j].height = aoz.tileSize;
+					
 					tileArray[i][j].x +=  tileDistanceX;
 					tileArray[i][j].y +=  tileDistanceY;
 					tileDistanceY +=  aoz.tileSize;
@@ -101,24 +105,25 @@
 
 			// Making the type of the tile easily readable in the code instead of assigning a number
 			var tileType = 5;// 5 For exit
-			
+
 			// Finding the position of the exit tile on the array
-			currentExitPosinArrayColumn = Math.round(tilesColumns/2)-1; // Halfway between the columns
-			currentExitPosinArrayRow = 0; // Top row
-			
+			currentExitPosinArrayColumn = Math.round(tilesColumns/2)-1;// Halfway between the columns
+			currentExitPosinArrayRow = 0;// Top row
+
 			// X/Y position on screen of original tile to be replaced by exit tile
 			var currentExitPosX:int = tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow].x;
 			var currentExitPosY:int = tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow].y;
-			
+
 			// Remove original tile. To be replaced with exit tile below
-			removeChild(tileArray[currentExitPosinArrayColumn][0]); // Remove from screen
-			tileArray[currentExitPosinArrayColumn][0] = null; // Remove reference to object for garbage collector to collect it
+			removeChild(tileArray[currentExitPosinArrayColumn][0]);// Remove from screen
+			tileArray[currentExitPosinArrayColumn][0] = null;// Remove reference to object for garbage collector to collect it
 
 			// Assigning exit colour to a tile
-			
+
 			tileArray[currentExitPosinArrayColumn][0] = new tile(tileType,currentExitPosinArrayColumn,currentExitPosinArrayRow);
 			tileArray[currentExitPosinArrayColumn][0].x = currentExitPosX;
 			tileArray[currentExitPosinArrayColumn][0].y = currentExitPosY;
+			setTileSize(currentExitPosinArrayColumn,0);
 			addChild(tileArray[currentExitPosinArrayColumn][0]);
 			tileArray[Math.round(tilesColumns/2)-1][0].transform.colorTransform = exitColor;
 
@@ -139,28 +144,28 @@
 			// Removing the tile grass tile where the hero tile will go. Probably can do better that this in a next version by not making it at all a grass tile at the beggining.
 
 			// Finding the position of the exit tile on the array
-			currentHeroPosinArrayColumn = Math.round(tilesColumns/2)-1; // Halfway between the columns
-			currentHeroPosinArrayRow = tilesRows-1; // Top row
-			
+			currentHeroPosinArrayColumn = Math.round(tilesColumns/2)-1;// Halfway between the columns
+			currentHeroPosinArrayRow = tilesRows - 1;// Top row
+
 			// X/Y position on screen of original tile to be replaced by exit tile
 			var currentHeroPosX:int = tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].x;
 			var currentHeroPosY:int = tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].y;
-			
+
 			trace(currentHeroPosX);
 			trace(currentHeroPosY);
-			
-			// Remove original tile. To be replaced with exit tile below
-			removeChild(tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow]); // Remove from screen
-			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow] = null; // Remove reference to object for garbage collector to collect it
 
-			
+			// Remove original tile. To be replaced with exit tile below
+			removeChild(tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow]);// Remove from screen
+			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow] = null;// Remove reference to object for garbage collector to collect it
+
+
 			// Assigning hero colour to a tile
 			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow] = new tile(tileType,currentHeroPosinArrayColumn,currentHeroPosinArrayRow);
-			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].x =currentHeroPosX;
-			
-			trace(tilesRows);
-			
-			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].y =currentHeroPosY;
+			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].x = currentHeroPosX;
+
+			setTileSize(currentHeroPosinArrayColumn,currentHeroPosinArrayRow);
+
+			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].y = currentHeroPosY;
 			addChild(tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow]);
 			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].transform.colorTransform = heroColor;
 
@@ -189,6 +194,16 @@
 			
 			Now every time a tile is clicked, chedk it's coordinates against the above table. If they match, check they type of tile, if empty(i.e. grass) move the hero tile to this new coordinate and update the array accordingly.
 			*/
+		}
+
+
+		public function setTileSize(column,row):void
+		{
+
+			tileArray[column][row].width = aoz.tileSize;
+			tileArray[column][row].height = aoz.tileSize;
+
+
 		}
 
 	}
