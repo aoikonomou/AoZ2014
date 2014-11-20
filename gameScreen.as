@@ -62,12 +62,12 @@
 
 					// Bellow I am creating a single kind of green tile. I need to create different types of tiles in the next version.
 					tileArray[i][j] = new tile(tileType,i,j);
-					
-					setTileSize(i,j); // Because many functions will be using this I don't want to keep rewriting so I made a function for it
-					
+
+					setTileSize(i,j);// Because many functions will be using this I don't want to keep rewriting so I made a function for it
+
 					// tileArray[i][j].width = aoz.tileSize;
 					// tileArray[i][j].height = aoz.tileSize;
-					
+
 					tileArray[i][j].x +=  tileDistanceX;
 					tileArray[i][j].y +=  tileDistanceY;
 					tileDistanceY +=  aoz.tileSize;
@@ -99,9 +99,6 @@
 
 		public function createExitTile()
 		{
-			// Creating hero color. Must be done like this. No direct access to color property of a movieclip.
-			var exitColor = new ColorTransform();
-			exitColor.color = 0xFFA500;
 
 			// Making the type of the tile easily readable in the code instead of assigning a number
 			var tileType = 5;// 5 For exit
@@ -125,18 +122,14 @@
 			tileArray[currentExitPosinArrayColumn][0].y = currentExitPosY;
 			setTileSize(currentExitPosinArrayColumn,0);
 			addChild(tileArray[currentExitPosinArrayColumn][0]);
-			tileArray[Math.round(tilesColumns/2)-1][0].transform.colorTransform = exitColor;
 
-			// position the tile at the right spot
+			colorizeTile(currentExitPosinArrayColumn,0,"exit");// Call the tile colorisation function with the position of the tile in the array and its type. The function knows what colour to make it based on the description you are passing to it
+
 
 		}
 
 		public function createPlayerTile()
 		{
-
-			// Creating hero color. Must be done like this. No direct access to color property of a movieclip.
-			var heroColor = new ColorTransform();
-			heroColor.color = 0xFFFF00;
 
 			// Making the type of the tile easily readable in the code instead of assigning a number
 			var tileType = 4;// 4 For hero
@@ -167,11 +160,8 @@
 
 			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].y = currentHeroPosY;
 			addChild(tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow]);
-			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].transform.colorTransform = heroColor;
-
-
-
-			// position the tile at the right spot
+			
+			colorizeTile(currentHeroPosinArrayColumn,currentHeroPosinArrayRow,"player");// Call the tile colorisation function with the position of the tile in the array and its type. The function knows what colour to make it based on the description you are passing to it
 
 		}
 
@@ -199,12 +189,46 @@
 
 		public function setTileSize(column,row):void
 		{
-
 			tileArray[column][row].width = aoz.tileSize;
 			tileArray[column][row].height = aoz.tileSize;
+		}
 
+		public function colorizeTile(column,row,type):void
+		{
+
+			// Creating tile color. Must be done like this. No direct access to color property of a movieclip.
+			var tileColor = new ColorTransform();
+			var tileColours:Array = new Array();
+
+			tileColours['grass'] = 0x6ABF63;// Green colour for grass
+			tileColours['block'] = 0xAEAEAE;// Gray colour for blocks/rocks
+			tileColours['path'] = 0xF4A460;// Brown colour for path
+			tileColours['pickup'] = 0x4B78F4;// Blue colour for pickups
+			tileColours['player'] = 0xFDFF00;// Yellow colour for player
+			tileColours['exit'] = 0xF2AF0F;// Orange colour for exit
+			tileColours['zombie'] = 0xF20F0F;// Red colour for Zombies
+
+
+			tileColor.color = tileColours[type];
+
+
+			/*
+			// Can also be done like this. This is a dynamic class. We don't know it's properties before runtime I think. We may be able to add more during run time?
+			
+			var colours:Object = new Object();
+			colours.green=0x6ABF63;
+			colours.brown=0xF4A460;
+			colours.grey=0xAEAEAE;
+			colours.blue=0x4B78F4;
+			colours.red=0xF20F0F;
+			colours.orange=0xF2AF0F;
+			colours.yellow=0xFDFF00;
+			*/
+
+			tileArray[column][row].transform.colorTransform = tileColor;
 
 		}
+
 
 	}
 
