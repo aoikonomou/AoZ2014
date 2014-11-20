@@ -143,20 +143,26 @@
 			currentHeroPosinArrayRow = tilesRows-1; // Top row
 			
 			// X/Y position on screen of original tile to be replaced by exit tile
-			var currentHerotPosX:int = tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].x;
+			var currentHeroPosX:int = tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].x;
 			var currentHeroPosY:int = tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].y;
 			
+			trace(currentHeroPosX);
+			trace(currentHeroPosY);
+			
 			// Remove original tile. To be replaced with exit tile below
-			removeChild(tileArray[currentHeroPosinArrayColumn][0]); // Remove from screen
-			tileArray[currentHeroPosinArrayColumn][0] = null; // Remove reference to object for garbage collector to collect it
+			removeChild(tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow]); // Remove from screen
+			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow] = null; // Remove reference to object for garbage collector to collect it
 
 			
 			// Assigning hero colour to a tile
-			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1] = new tile(tileType,currentHeroPosinArrayColumn,currentHeroPosinArrayRow);
-			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].x =currentHerotPosX;
-			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].y =currentHerotPosY;
-			addChild(tileArray[Math.round(tilesColumns/2)-1][tilesRows-1]);
-			tileArray[Math.round(tilesColumns/2)-1][tilesRows-1].transform.colorTransform = heroColor;
+			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow] = new tile(tileType,currentHeroPosinArrayColumn,currentHeroPosinArrayRow);
+			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].x =currentHeroPosX;
+			
+			trace(tilesRows);
+			
+			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].y =currentHeroPosY;
+			addChild(tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow]);
+			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].transform.colorTransform = heroColor;
 
 
 
