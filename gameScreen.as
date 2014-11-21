@@ -7,8 +7,6 @@
 	import flash.geom.ColorTransform;
 	import flashx.textLayout.operations.InsertTextOperation;
 
-	// To be able to change tile colours.
-
 
 	public class gameScreen extends MovieClip
 	{
@@ -39,6 +37,10 @@
 		// This is to keep track of where the exit tile is in the array during the game
 		var currentExitPosinArrayColumn:int;
 		var currentExitPosinArrayRow:int;
+
+		// This is where you keep track of a tile whilst it is being switched to another type
+		var currentArrayColumn:int;
+		var currentArrayRow:int;
 
 
 		public function gameScreen()
@@ -101,121 +103,81 @@
 		public function createMainPath()
 		{
 
-
-			// start from the bottom. hmmm, or, actually, why not, start from the top. How many iterations. As many as rows
-
-			// Start around the middle of the screen
-
-			var randomBegginingTile=randomNumberRange((tilesColumns/2)-(tilesColumns/4),(tilesColumns/2)+(tilesColumns/4));// Random starting point (tilesColumns/2)
-			createExitTile(randomBegginingTile,0);
+			// Start around the middle of the screen at the top
+			var randomBegginingTile=randomNumberRange((tilesColumns/2)-(tilesColumns/4),(tilesColumns/2)+(tilesColumns/4));// Random starting point around the middle of the columns
+			createTile(randomBegginingTile,0,5);// Create the exit tile here first
 
 			var previousTile = randomBegginingTile;// To update as the new starting position for every iteration of the loop
 
 			trace("random start tile: " + randomBegginingTile);
-			tileArray[randomBegginingTile][0].x = -20;
 
-
-			for (var i=1; i<tilesRows; i++)
+			for (var i=1; i<tilesRows-1; i++)
 			{
 
-				var randomNextTile:int
+				var randomNextTile:int;
 				var leftEdgeCheck:int = 0;
 				var rightEdgeCheck:int = tilesColumns;
 				var randomNumber:int = (previousTile-1) + Math.round(Math.random()*(2));
-				
+
 				//randomNextTile = (previousTile-1) + Math.round(Math.random()*(2));
-				
-				if (randomNextTile >= leftEdgeCheck && randomNextTile <= rightEdgeCheck){
-					
+
+				if (randomNextTile >= leftEdgeCheck && randomNextTile <= rightEdgeCheck)
+				{
+
 					randomNextTile = randomNumber;
-					} else {
-						
-						trace("Out of bounds");
-						}
-				
-				
-				
+				}
+				else
+				{
+
+					trace("Out of bounds");
+				}
+
 				previousTile = randomNextTile;
+				createTile(randomNextTile,i,1);
+
 				tileArray[randomNextTile][i].x = -20;
 
 			}
 
-
+			//createTile(previousTile,tilesRows,4); // Create hero tile
+			
 
 		}
 
 
-		public function createExitTile(column,row)
+		public function createTile(column,row,type)
 		{
 
-
 			// Making the type of the tile easily readable in the code instead of assigning a number
-			var tileType = 5;// 5 For exit
+			var tileType = type;// 5 For exit
 
 			// Finding the position of the exit tile on the array
 			//currentExitPosinArrayColumn = Math.round(tilesColumns/2)-1;// Halfway between the columns
 			//currentExitPosinArrayRow = 0;// Top row
 
-			currentExitPosinArrayColumn = column;
-			currentExitPosinArrayRow = row;
+			currentArrayColumn = column;
+			currentArrayRow = row;
 
 			// X/Y position on screen of original tile to be replaced by exit tile
-			var currentExitPosX:int = tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow].x;
-			var currentExitPosY:int = tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow].y;
+			var currentPosX:int = tileArray[currentArrayColumn][currentArrayRow].x;
+			var currentPosY:int = tileArray[currentArrayColumn][currentArrayRow].y;
 
 			// Remove original tile. To be replaced with exit tile below
-			removeChild(tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow]);// Remove from screen
-			tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow] = null;// Remove reference to object for garbage collector to collect it
+			removeChild(tileArray[currentArrayColumn][currentArrayRow]);// Remove from screen
+			tileArray[currentArrayColumn][currentArrayRow] = null;// Remove reference to object for garbage collector to collect it
 
 			// Assigning exit colour to a tile
 
-			tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow] = new tile(tileType,currentExitPosinArrayColumn,currentExitPosinArrayRow);
-			tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow].x = currentExitPosX;
-			tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow].y = currentExitPosY;
-			setTileSize(currentExitPosinArrayColumn,currentExitPosinArrayRow);
-			addChild(tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow]);
+			tileArray[currentArrayColumn][currentArrayRow] = new tile(tileType,currentArrayColumn,currentArrayRow);
+			tileArray[currentArrayColumn][currentArrayRow].x = currentPosX;
+			tileArray[currentArrayColumn][currentArrayRow].y = currentPosY;
+			setTileSize(currentArrayColumn,currentArrayRow);
+			addChild(tileArray[currentArrayColumn][currentArrayRow]);
 
-			colorizeTile(currentExitPosinArrayColumn,currentExitPosinArrayRow,"exit");// Call the tile colorisation function with the position of the tile in the array and its type. The function knows what colour to make it based on the description you are passing to it
-
-
-		}
-
-		public function createPlayerTile()
-		{
-
-			// Making the type of the tile easily readable in the code instead of assigning a number
-			var tileType = 4;// 4 For hero
-
-			// Removing the tile grass tile where the hero tile will go. Probably can do better that this in a next version by not making it at all a grass tile at the beggining.
-
-			// Finding the position of the exit tile on the array
-			currentHeroPosinArrayColumn = Math.round(tilesColumns/2)-1;// Halfway between the columns
-			currentHeroPosinArrayRow = tilesRows - 1;// Top row
-
-			// X/Y position on screen of original tile to be replaced by exit tile
-			var currentHeroPosX:int = tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].x;
-			var currentHeroPosY:int = tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].y;
-
-			trace(currentHeroPosX);
-			trace(currentHeroPosY);
-
-			// Remove original tile. To be replaced with exit tile below
-			removeChild(tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow]);// Remove from screen
-			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow] = null;// Remove reference to object for garbage collector to collect it
-
-
-			// Assigning hero colour to a tile
-			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow] = new tile(tileType,currentHeroPosinArrayColumn,currentHeroPosinArrayRow);
-			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].x = currentHeroPosX;
-
-			setTileSize(currentHeroPosinArrayColumn,currentHeroPosinArrayRow);
-
-			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].y = currentHeroPosY;
-			addChild(tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow]);
-
-			colorizeTile(currentHeroPosinArrayColumn,currentHeroPosinArrayRow,"player");// Call the tile colorisation function with the position of the tile in the array and its type. The function knows what colour to make it based on the description you are passing to it
+			colorizeTile(currentArrayColumn,currentArrayRow,"exit");// Call the tile colorisation function with the position of the tile in the array and its type. The function knows what colour to make it based on the description you are passing to it
 
 		}
+		
 
 		public function checkTilesAroundHero()
 		{
@@ -285,7 +247,6 @@
 		{
 			return (Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum);
 		}
-
 
 	}
 

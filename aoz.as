@@ -20,8 +20,8 @@
 
 			// No straight forward way to change resolution at runtime. It is possible (I think) by putting objects on the stage and having the stage rescale but not by directly setting the valus in the commands bellow.
 
-			trace(stage.stageWidth);
-			trace(stage.stageHeight);
+			//trace(stage.stageWidth);
+			//trace(stage.stageHeight);
 
 			// Question 2, shall i make the first screen as a separate file and then load it? How would they communicate with the main game area?
 			

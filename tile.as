@@ -30,7 +30,6 @@
 				this.addEventListener(MouseEvent.CLICK,moveHereifyouCan);
 			}
 			
-			
 			if (tileType == 4)
 			{
 				this.addEventListener(MouseEvent.CLICK,sayHello);
