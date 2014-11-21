@@ -48,10 +48,12 @@
 
 			createGrassTiles();// Instantiate new grass tiles
 			// removeGrassTiles(); // This works
-			//createExitTile(column,row);
-			createMainPath();
-			//createPlayerTile(column,row);
+			createMainPath(); // Includes exit and hero tile on the path.
+			// Scan and replace function?
+
 		}
+		
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		public function createGrassTiles()
 		{
