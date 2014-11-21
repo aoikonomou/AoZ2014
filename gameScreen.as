@@ -106,7 +106,7 @@
 
 			// Start around the middle of the screen
 
-			var randomBegginingTile=randomNumberRange(4,10);// Random starting point (tilesColumns/2)
+			var randomBegginingTile=randomNumberRange((tilesColumns/2)-(tilesColumns/4),(tilesColumns/2)+(tilesColumns/4));// Random starting point (tilesColumns/2)
 			createExitTile(randomBegginingTile,0);
 
 			var previousTile = randomBegginingTile;// To update as the new starting position for every iteration of the loop
@@ -118,7 +118,23 @@
 			for (var i=1; i<tilesRows; i++)
 			{
 
-				var randomNextTile = (previousTile-1) + Math.round(Math.random()*(2));
+				var randomNextTile:int
+				var leftEdgeCheck:int = 0;
+				var rightEdgeCheck:int = tilesColumns;
+				var randomNumber:int = (previousTile-1) + Math.round(Math.random()*(2));
+				
+				//randomNextTile = (previousTile-1) + Math.round(Math.random()*(2));
+				
+				if (randomNextTile >= leftEdgeCheck && randomNextTile <= rightEdgeCheck){
+					
+					randomNextTile = randomNumber;
+					} else {
+						
+						trace("Out of bounds");
+						}
+				
+				
+				
 				previousTile = randomNextTile;
 				tileArray[randomNextTile][i].x = -20;
 
