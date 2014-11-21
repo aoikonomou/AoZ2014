@@ -108,38 +108,38 @@
 			createTile(randomBegginingTile,0,5);// Create the exit tile here first
 
 			var previousTile = randomBegginingTile;// To update as the new starting position for every iteration of the loop
-
+			var nextRandomTile:int;
+			var randomNumber:int;
 			trace("random start tile: " + randomBegginingTile);
+
 
 			for (var i=1; i<tilesRows-1; i++)
 			{
 
-				var randomNextTile:int;
 				var leftEdgeCheck:int = 0;
 				var rightEdgeCheck:int = tilesColumns;
-				var randomNumber:int = (previousTile-1) + Math.round(Math.random()*(2));
+				randomNumber = (previousTile-1) + Math.round(Math.random()*(2));
 
-				//randomNextTile = (previousTile-1) + Math.round(Math.random()*(2));
+				//nextRandomTile = (previousTile-1) + Math.round(Math.random()*(2));
 
-				if (randomNextTile >= leftEdgeCheck && randomNextTile <= rightEdgeCheck)
+				if (nextRandomTile >= leftEdgeCheck && nextRandomTile <= rightEdgeCheck)
 				{
-
-					randomNextTile = randomNumber;
+					nextRandomTile = randomNumber;
 				}
 				else
 				{
-
 					trace("Out of bounds");
 				}
 
-				previousTile = randomNextTile;
-				createTile(randomNextTile,i,1);
+				previousTile = nextRandomTile;
+				createTile(nextRandomTile,i,1);
 
-				tileArray[randomNextTile][i].x = -20;
+				tileArray[nextRandomTile][i].x = -20;
 
 			}
-
-			//createTile(previousTile,tilesRows,4); // Create hero tile
+			
+			//randomNumber = (previousTile-1) + Math.round(Math.random()*(2));
+			//createTile(nextRandomTile,tilesRows,4); // Create hero tile
 			
 
 		}
