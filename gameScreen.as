@@ -46,9 +46,9 @@
 
 			createGrassTiles();// Instantiate new grass tiles
 			// removeGrassTiles(); // This works
-			createExitTile();
+			//createExitTile(column,row);
 			createMainPath();
-			createPlayerTile();
+			//createPlayerTile(column,row);
 		}
 
 		public function createGrassTiles()
@@ -97,60 +97,69 @@
 			}
 		}
 
-		
-		public function createMainPath(){
-			
-			
+
+		public function createMainPath()
+		{
+
+
 			// start from the bottom. hmmm, or, actually, why not, start from the top. How many iterations. As many as rows
-			
-			
-			var randomBegginingTile= 1 + Math.round(Math.random()*(tilesColumns-2)); // Random starting point
-			var previousTile = randomBegginingTile; // To update as the new starting position for every iteration of the loop
-			
-				trace("random start tile: " + randomBegginingTile);
-				tileArray[randomBegginingTile][0].x = -20;
-			
-			
-			for (var i=1;i<tilesRows;i++){
-				
+
+			// Start around the middle of the screen
+
+			var randomBegginingTile=randomNumberRange(4,10);// Random starting point (tilesColumns/2)
+			createExitTile(randomBegginingTile,0);
+
+			var previousTile = randomBegginingTile;// To update as the new starting position for every iteration of the loop
+
+			trace("random start tile: " + randomBegginingTile);
+			tileArray[randomBegginingTile][0].x = -20;
+
+
+			for (var i=1; i<tilesRows; i++)
+			{
+
 				var randomNextTile = (previousTile-1) + Math.round(Math.random()*(2));
 				previousTile = randomNextTile;
 				tileArray[randomNextTile][i].x = -20;
-				
-				}
-			
-			
-			
+
 			}
-		
-		
-		public function createExitTile()
+
+
+
+		}
+
+
+		public function createExitTile(column,row)
 		{
+
 
 			// Making the type of the tile easily readable in the code instead of assigning a number
 			var tileType = 5;// 5 For exit
 
 			// Finding the position of the exit tile on the array
-			currentExitPosinArrayColumn = Math.round(tilesColumns/2)-1;// Halfway between the columns
-			currentExitPosinArrayRow = 0;// Top row
+			//currentExitPosinArrayColumn = Math.round(tilesColumns/2)-1;// Halfway between the columns
+			//currentExitPosinArrayRow = 0;// Top row
+
+			currentExitPosinArrayColumn = column;
+			currentExitPosinArrayRow = row;
 
 			// X/Y position on screen of original tile to be replaced by exit tile
 			var currentExitPosX:int = tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow].x;
 			var currentExitPosY:int = tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow].y;
 
 			// Remove original tile. To be replaced with exit tile below
-			removeChild(tileArray[currentExitPosinArrayColumn][0]);// Remove from screen
-			tileArray[currentExitPosinArrayColumn][0] = null;// Remove reference to object for garbage collector to collect it
+			removeChild(tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow]);// Remove from screen
+			tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow] = null;// Remove reference to object for garbage collector to collect it
 
 			// Assigning exit colour to a tile
 
-			tileArray[currentExitPosinArrayColumn][0] = new tile(tileType,currentExitPosinArrayColumn,currentExitPosinArrayRow);
-			tileArray[currentExitPosinArrayColumn][0].x = currentExitPosX;
-			tileArray[currentExitPosinArrayColumn][0].y = currentExitPosY;
-			setTileSize(currentExitPosinArrayColumn,0);
-			addChild(tileArray[currentExitPosinArrayColumn][0]);
+			tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow] = new tile(tileType,currentExitPosinArrayColumn,currentExitPosinArrayRow);
+			tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow].x = currentExitPosX;
+			tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow].y = currentExitPosY;
+			setTileSize(currentExitPosinArrayColumn,currentExitPosinArrayRow);
+			addChild(tileArray[currentExitPosinArrayColumn][currentExitPosinArrayRow]);
 
-			colorizeTile(currentExitPosinArrayColumn,0,"exit");// Call the tile colorisation function with the position of the tile in the array and its type. The function knows what colour to make it based on the description you are passing to it
+			colorizeTile(currentExitPosinArrayColumn,currentExitPosinArrayRow,"exit");// Call the tile colorisation function with the position of the tile in the array and its type. The function knows what colour to make it based on the description you are passing to it
 
 
 		}
@@ -187,7 +196,7 @@
 
 			tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow].y = currentHeroPosY;
 			addChild(tileArray[currentHeroPosinArrayColumn][currentHeroPosinArrayRow]);
-			
+
 			colorizeTile(currentHeroPosinArrayColumn,currentHeroPosinArrayRow,"player");// Call the tile colorisation function with the position of the tile in the array and its type. The function knows what colour to make it based on the description you are passing to it
 
 		}
@@ -253,6 +262,12 @@
 
 			tileArray[column][row].transform.colorTransform = tileColor;
 
+		}
+
+
+		function randomNumberRange(minNum:int, maxNum:int):int
+		{
+			return (Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum);
 		}
 
 

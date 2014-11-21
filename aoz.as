@@ -13,7 +13,7 @@
 		// Screen resolution related variables (for multiple devices, but what is the target device? Actually, desktop for once)
 		static var screenXsize:int = 800; // static keyword makes it accessible directly from other objects
 		static var screenYsize:int = 600;
-		static var tileSize:int = 48;
+		static var tileSize:int = 64;
 		
 		public function aoz() {
 			// constructor code
