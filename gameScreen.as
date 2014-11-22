@@ -114,12 +114,15 @@
 			var randomNumber:int;
 			trace("random start tile: " + randomBegginingTile);
 
-
-			for (var i=1; i<tilesRows-1; i++)
+			
+			// Now start making the path
+			for (var row=1; row<tilesRows-1; row++)
 			{
 
 				var leftEdgeCheck:int = 0;
 				var rightEdgeCheck:int = tilesColumns;
+				
+				// Select a random tile from the 3 tiles in front of the current tile. You 'll pass that number as a column number in the next iteration
 				randomNumber = (previousTile-1) + Math.round(Math.random()*(2));
 
 				//nextRandomTile = (previousTile-1) + Math.round(Math.random()*(2));
@@ -134,14 +137,15 @@
 				}
 
 				previousTile = nextRandomTile;
-				createTile(nextRandomTile,i,1);
+				createTile(nextRandomTile,row,1);
 
-				tileArray[nextRandomTile][i].x = -20;
+				tileArray[nextRandomTile][row].x = -20;
 
 			}
 			
-			//randomNumber = (previousTile-1) + Math.round(Math.random()*(2));
-			//createTile(nextRandomTile,tilesRows,4); // Create hero tile
+			randomNumber = (previousTile-1) + Math.round(Math.random()*(2));
+			nextRandomTile = randomNumber;
+			createTile(nextRandomTile,tilesRows-1,4); // Create hero tile
 			
 
 		}
