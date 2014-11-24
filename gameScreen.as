@@ -48,12 +48,12 @@
 
 			createGrassTiles();// Instantiate new grass tiles
 			// removeGrassTiles(); // This works
-			createMainPath(); // Includes exit and hero tile on the path.
+			createMainPath();// Includes exit and hero tile on the path.
 			// Scan and replace function?
 
 		}
-		
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		public function createGrassTiles()
 		{
@@ -106,35 +106,60 @@
 		{
 
 			// Start around the middle of the screen at the top
-			var randomBegginingTile=randomNumberRange((tilesColumns/2)-(tilesColumns/4),(tilesColumns/2)+(tilesColumns/4));// Random starting point around the middle of the columns
+			var randomBegginingTile:int;
+			
+			randomBegginingTile = randomNumberRange((tilesColumns/2)-(tilesColumns/4),(tilesColumns/2)+(tilesColumns/4));// Random starting point around the middle of the columns
+			
+			randomBegginingTile=10;
+			
 			createTile(randomBegginingTile,0,5);// Create the exit tile here first
 
 			var previousTile = randomBegginingTile;// To update as the new starting position for every iteration of the loop
 			var nextRandomTile:int;
-			var randomNumber:int;
+			var randomNumber:int;// a random number between -1 to 1 added to previousTile variable
 			trace("random start tile: " + randomBegginingTile);
 
-			
+
 			// Now start making the path
 			for (var row=1; row<tilesRows-1; row++)
 			{
 
-				var leftEdgeCheck:int = 0;
-				var rightEdgeCheck:int = tilesColumns;
-				
-				// Select a random tile from the 3 tiles in front of the current tile. You 'll pass that number as a column number in the next iteration
+				var leftEdgeCheck:int = 0;// Set the left edge of the screen in terms of columns
+				var rightEdgeCheck:int = tilesColumns;// Set the right edge of the screen in terms of columns
+
+				// Select a random tile from the 3 tiles in fron of (going downards) the current tile. You 'll pass that number as a column number in the next iteration
 				randomNumber = (previousTile-1) + Math.round(Math.random()*(2));
 
 				//nextRandomTile = (previousTile-1) + Math.round(Math.random()*(2));
 
-				if (nextRandomTile >= leftEdgeCheck && nextRandomTile <= rightEdgeCheck)
+				if (randomNumber >= leftEdgeCheck && nextRandomTile <= rightEdgeCheck)
 				{
 					nextRandomTile = randomNumber;
 				}
 				else
 				{
 					trace("Out of bounds");
+					break;
+
 				}
+
+				/*if (randomNumber < leftEdgeCheck)
+				{
+
+					nextRandomTile = randomNumber + 1;
+					trace("Out of bounds left");
+
+				}
+
+				if (randomNumber > rightEdgeCheck)
+				{
+
+					nextRandomTile = randomNumber-1;
+					trace("Out of bounds right");
+
+				}*/
+
+
 
 				previousTile = nextRandomTile;
 				createTile(nextRandomTile,row,1);
@@ -142,11 +167,11 @@
 				tileArray[nextRandomTile][row].x = -20;
 
 			}
-			
+
 			randomNumber = (previousTile-1) + Math.round(Math.random()*(2));
 			nextRandomTile = randomNumber;
-			createTile(nextRandomTile,tilesRows-1,4); // Create hero tile
-			
+			createTile(nextRandomTile,tilesRows-1,4);// Create hero tile
+
 
 		}
 
@@ -183,7 +208,7 @@
 			colorizeTile(currentArrayColumn,currentArrayRow,"exit");// Call the tile colorisation function with the position of the tile in the array and its type. The function knows what colour to make it based on the description you are passing to it
 
 		}
-		
+
 
 		public function checkTilesAroundHero()
 		{
