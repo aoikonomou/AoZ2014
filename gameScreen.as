@@ -54,11 +54,13 @@
 				{
 					var tileType:int = 0;// This is the grass tile. Just making it readable instead of using numbers to pass the type to the objects when they are created below
 
-					// Bellow I am creating a single kind of green tile. I need to create different types of tiles in the next version.
-					tileArray[i][j] = new tile(tileType,i,j);
+					// Bellow I am creating a single kind of green tile.
+
+					tileArray[i][j] = createTile(i,j,tileType);
 
 					setTileSize(i,j);// Because many functions will be using this I don't want to keep rewriting so I made a function for it
 
+					//trace(i,j);
 					tileArray[i][j].x +=  tileDistanceX;
 					tileArray[i][j].y +=  tileDistanceY;
 					tileDistanceY +=  aoz.tileSize;
@@ -95,7 +97,7 @@
 			var randomBegginingTile:int;
 			randomBegginingTile = randomNumberRange((tilesColumns/2)-(tilesColumns/4),(tilesColumns/2)+(tilesColumns/4));// Random starting point around the middle of the columns
 
-			randomBegginingTile = 1;// Debugging code, remove
+			//randomBegginingTile = 1;// Debugging code, remove
 
 			createTile(randomBegginingTile,0,5);// Create the exit tile here first. Parameters are column, row, tile type.
 
@@ -117,27 +119,21 @@
 				if (randomNumber >= leftEdgeCheck && randomNumber <= rightEdgeCheck)
 				{
 					nextRandomTile = randomNumber;
-
 					previousTile = nextRandomTile;
-
 
 				}
 				else
 				{
 					if (randomNumber < leftEdgeCheck)
 					{
-
 						nextRandomTile = randomNumber + 1;
 						trace("Out of bounds left. Column: "+row);
-
 					}
 
 					if (randomNumber > rightEdgeCheck)
 					{
-
 						nextRandomTile = randomNumber - 1;
 						trace("Out of bounds right. Column: "+row);
-
 					}
 
 				}
@@ -149,41 +145,51 @@
 
 			randomNumber = (previousTile-1) + Math.round(Math.random()*(2));
 			nextRandomTile = randomNumber;
+
+			// I need to write a function to check edges and send all tiles through it? Just to be on the safe side?. I certainly need to check the hero tile for going out of bounds
+
 			createTile(nextRandomTile,tilesRows-1,4);// Create hero tile
 
+		}
+
+
+		// Put trees, rocks and other stuff on the level
+		public function populateLevel()
+		{
+
+			for (var i=0; i<tilesColumns; i++)
+			{
+
+				for (var j=0; j<tilesRows; j++)
+				{
+				}
+			}
 		}
 
 
 		public function createTile(column,row,type)
 		{
 
-			// Making the type of the tile easily readable in the code instead of assigning a number
-			var tileType = type;// 5 For exit
-
-			// Finding the position of the exit tile on the array
-			//currentExitPosinArrayColumn = Math.round(tilesColumns/2)-1;// Halfway between the columns
-			//currentExitPosinArrayRow = 0;// Top row
-
-			currentArrayColumn = column;
-			currentArrayRow = row;
-
 			// X/Y position on screen of original tile to be replaced by exit tile
-			var currentPosX:int = tileArray[currentArrayColumn][currentArrayRow].x;
-			var currentPosY:int = tileArray[currentArrayColumn][currentArrayRow].y;
+			if (tileArray[column][row])
+			{
+				var currentPosX:int = tileArray[column][row].x;
+				var currentPosY:int = tileArray[column][row].y;
 
-			// Remove original tile. To be replaced with exit tile below
-			removeChild(tileArray[currentArrayColumn][currentArrayRow]);// Remove from screen
-			tileArray[currentArrayColumn][currentArrayRow] = null;// Remove reference to object for garbage collector to collect it
+				// Remove original tile. To be replaced with exit tile below
+				removeChild(tileArray[column][row]);// Remove from screen
+				tileArray[column][row] = null;// Remove reference to object for garbage collector to collect it
 
-			// Assigning exit colour to a tile
+				// Assigning tile colour according to type
+			}
+			tileArray[column][row] = new tile(column,row,type);
+			trace("did it", column, row);
+			tileArray[column][row].x = currentPosX;
+			tileArray[column][row].y = currentPosY;
+			setTileSize(column,row);
+			addChild(tileArray[column][row]);
 
-			tileArray[currentArrayColumn][currentArrayRow] = new tile(tileType,currentArrayColumn,currentArrayRow);
-			tileArray[currentArrayColumn][currentArrayRow].x = currentPosX;
-			tileArray[currentArrayColumn][currentArrayRow].y = currentPosY;
-			setTileSize(currentArrayColumn,currentArrayRow);
-			addChild(tileArray[currentArrayColumn][currentArrayRow]);
-
-			colorizeTile(currentArrayColumn,currentArrayRow,"exit");// Call the tile colorisation function with the position of the tile in the array and its type. The function knows what colour to make it based on the description you are passing to it
+			colorizeTile(column,row,type);// Call the tile colorisation function with the position of the tile in the array and its type. The function knows what colour to make it based on the description you are passing to it
 
 		}
 
@@ -210,8 +216,11 @@
 
 		public function setTileSize(column,row):void
 		{
-			tileArray[column][row].width = aoz.tileSize;
-			tileArray[column][row].height = aoz.tileSize;
+			if (tileArray[column][row])
+			{
+				tileArray[column][row].width = aoz.tileSize;
+				tileArray[column][row].height = aoz.tileSize;
+			}
 		}
 
 		public function colorizeTile(column,row,type):void
@@ -221,13 +230,13 @@
 			var tileColor = new ColorTransform();
 			var tileColours:Array = new Array();
 
-			tileColours['grass'] = 0x6ABF63;// Green colour for grass
-			tileColours['block'] = 0xAEAEAE;// Gray colour for blocks/rocks
-			tileColours['path'] = 0xF4A460;// Brown colour for path
-			tileColours['pickup'] = 0x4B78F4;// Blue colour for pickups
-			tileColours['player'] = 0xFDFF00;// Yellow colour for player
-			tileColours['exit'] = 0xF2AF0F;// Orange colour for exit
-			tileColours['zombie'] = 0xF20F0F;// Red colour for Zombies
+			tileColours[0] = 0x6ABF63;// Green colour for grass
+			tileColours[1] = 0xAEAEAE;// Gray colour for blocks/rocks
+			tileColours[2] = 0xF4A460;// Brown colour for path
+			tileColours[3] = 0x4B78F4;// Blue colour for pickups
+			tileColours[4] = 0xFDFF00;// Yellow colour for player
+			tileColours[5] = 0xF2AF0F;// Orange colour for exit
+			tileColours[6] = 0xF20F0F;// Red colour for Zombies
 
 
 			tileColor.color = tileColours[type];

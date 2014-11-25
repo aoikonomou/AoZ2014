@@ -16,7 +16,7 @@
 		var tileArrayPosY:int;
 		
 
-		public function tile(tileType,ArrayPosX,ArrayPosY)
+		public function tile(ArrayPosX,ArrayPosY,tileType)
 		{
 			// constructor code
 			//trace(type);
