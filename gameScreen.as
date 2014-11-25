@@ -95,7 +95,7 @@
 			var randomBegginingTile:int;
 			randomBegginingTile = randomNumberRange((tilesColumns/2)-(tilesColumns/4),(tilesColumns/2)+(tilesColumns/4));// Random starting point around the middle of the columns
 
-			randomBegginingTile = 10;// Debugging code, remove
+			randomBegginingTile = 1;// Debugging code, remove
 
 			createTile(randomBegginingTile,0,5);// Create the exit tile here first. Parameters are column, row, tile type.
 
@@ -105,7 +105,7 @@
 			trace("random start tile: " + randomBegginingTile);
 
 			var leftEdgeCheck:int = 0;// Set the left edge of the screen in terms of columns
-			var rightEdgeCheck:int = tilesColumns-1;// Set the right edge of the screen in terms of columns
+			var rightEdgeCheck:int = tilesColumns - 1;// Set the right edge of the screen in terms of columns
 
 			// Now start making the path. Start from row 1 instead of zero because on 0 you have the exit tile.
 			for (var row=1; row<tilesRows-1; row++)
@@ -114,40 +114,36 @@
 				// Select a random tile from the 3 tiles in fron of (going downards) the current tile. You 'll pass that number as a column number in the next iteration
 				randomNumber = (previousTile-1) + Math.round(Math.random()*(2));
 
-				if (randomNumber > rightEdgeCheck){trace("babouinos");}
-
 				if (randomNumber >= leftEdgeCheck && randomNumber <= rightEdgeCheck)
 				{
 					nextRandomTile = randomNumber;
 
 					previousTile = nextRandomTile;
-					createTile(nextRandomTile,row,1);
 
-					tileArray[nextRandomTile][row].x = -20;
 
 				}
 				else
 				{
-					trace("Out of bounds");
-					break;
+					if (randomNumber < leftEdgeCheck)
+					{
+
+						nextRandomTile = randomNumber + 1;
+						trace("Out of bounds left. Column: "+row);
+
+					}
+
+					if (randomNumber > rightEdgeCheck)
+					{
+
+						nextRandomTile = randomNumber - 1;
+						trace("Out of bounds right. Column: "+row);
+
+					}
 
 				}
 
-				/*if (randomNumber < leftEdgeCheck)
-				{
-				
-				nextRandomTile = randomNumber + 1;
-				trace("Out of bounds left");
-				
-				}
-				
-				if (randomNumber > rightEdgeCheck)
-				{
-				
-				nextRandomTile = randomNumber-1;
-				trace("Out of bounds right");
-				
-				}*/
+				createTile(nextRandomTile,row,1);
+				tileArray[nextRandomTile][row].x = -20;
 
 			}
 
