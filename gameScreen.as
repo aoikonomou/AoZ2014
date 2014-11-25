@@ -7,7 +7,6 @@
 	import flash.geom.ColorTransform;
 	import flashx.textLayout.operations.InsertTextOperation;
 
-
 	public class gameScreen extends MovieClip
 	{
 		var tileArray:Array = new Array();
@@ -21,27 +20,18 @@
 		// var totalTiles:int = tilesRows * tilesColumns;
 
 		// Different types of tiles to be created
-		var type:Array = [0,1,2,3,4,5];
+		var type:Array = [0,1,2,3,4,5];// 0:grass, 1:block, 2:zombie, 3:pickup, 4:hero, 5:exit
 
-		// 0 = grass
-		// 1 = block
-		// 2 = zombie
-		// 3 = pickup
-		// 4 = hero
-		// 5 = exit
-
-		// This is to keep track of where the hero tile is in the array during the game
+		// This is to keep track of where the hero and exit tiles are in the array during the game
 		var currentHeroPosinArrayColumn:int;
 		var currentHeroPosinArrayRow:int;
 
-		// This is to keep track of where the exit tile is in the array during the game
 		var currentExitPosinArrayColumn:int;
 		var currentExitPosinArrayRow:int;
 
 		// This is where you keep track of a tile whilst it is being switched to another type
 		var currentArrayColumn:int;
 		var currentArrayRow:int;
-
 
 		public function gameScreen()
 		{
@@ -69,9 +59,6 @@
 
 					setTileSize(i,j);// Because many functions will be using this I don't want to keep rewriting so I made a function for it
 
-					// tileArray[i][j].width = aoz.tileSize;
-					// tileArray[i][j].height = aoz.tileSize;
-
 					tileArray[i][j].x +=  tileDistanceX;
 					tileArray[i][j].y +=  tileDistanceY;
 					tileDistanceY +=  aoz.tileSize;
@@ -97,7 +84,6 @@
 						removeChild(tileArray[i][j]);
 					}
 				}
-
 			}
 		}
 
@@ -107,34 +93,38 @@
 
 			// Start around the middle of the screen at the top
 			var randomBegginingTile:int;
-			
 			randomBegginingTile = randomNumberRange((tilesColumns/2)-(tilesColumns/4),(tilesColumns/2)+(tilesColumns/4));// Random starting point around the middle of the columns
-			
-			randomBegginingTile=10;
-			
-			createTile(randomBegginingTile,0,5);// Create the exit tile here first
 
-			var previousTile = randomBegginingTile;// To update as the new starting position for every iteration of the loop
+			randomBegginingTile = 10;// Debugging code, remove
+
+			createTile(randomBegginingTile,0,5);// Create the exit tile here first. Parameters are column, row, tile type.
+
+			var previousTile = randomBegginingTile;// Keeps track of the current tile to create new ones from in terms of position
 			var nextRandomTile:int;
 			var randomNumber:int;// a random number between -1 to 1 added to previousTile variable
 			trace("random start tile: " + randomBegginingTile);
 
+			var leftEdgeCheck:int = 0;// Set the left edge of the screen in terms of columns
+			var rightEdgeCheck:int = tilesColumns-1;// Set the right edge of the screen in terms of columns
 
-			// Now start making the path
+			// Now start making the path. Start from row 1 instead of zero because on 0 you have the exit tile.
 			for (var row=1; row<tilesRows-1; row++)
 			{
-
-				var leftEdgeCheck:int = 0;// Set the left edge of the screen in terms of columns
-				var rightEdgeCheck:int = tilesColumns;// Set the right edge of the screen in terms of columns
 
 				// Select a random tile from the 3 tiles in fron of (going downards) the current tile. You 'll pass that number as a column number in the next iteration
 				randomNumber = (previousTile-1) + Math.round(Math.random()*(2));
 
-				//nextRandomTile = (previousTile-1) + Math.round(Math.random()*(2));
+				if (randomNumber > rightEdgeCheck){trace("babouinos");}
 
-				if (randomNumber >= leftEdgeCheck && nextRandomTile <= rightEdgeCheck)
+				if (randomNumber >= leftEdgeCheck && randomNumber <= rightEdgeCheck)
 				{
 					nextRandomTile = randomNumber;
+
+					previousTile = nextRandomTile;
+					createTile(nextRandomTile,row,1);
+
+					tileArray[nextRandomTile][row].x = -20;
+
 				}
 				else
 				{
@@ -145,33 +135,25 @@
 
 				/*if (randomNumber < leftEdgeCheck)
 				{
-
-					nextRandomTile = randomNumber + 1;
-					trace("Out of bounds left");
-
+				
+				nextRandomTile = randomNumber + 1;
+				trace("Out of bounds left");
+				
 				}
-
+				
 				if (randomNumber > rightEdgeCheck)
 				{
-
-					nextRandomTile = randomNumber-1;
-					trace("Out of bounds right");
-
+				
+				nextRandomTile = randomNumber-1;
+				trace("Out of bounds right");
+				
 				}*/
-
-
-
-				previousTile = nextRandomTile;
-				createTile(nextRandomTile,row,1);
-
-				tileArray[nextRandomTile][row].x = -20;
 
 			}
 
 			randomNumber = (previousTile-1) + Math.round(Math.random()*(2));
 			nextRandomTile = randomNumber;
 			createTile(nextRandomTile,tilesRows-1,4);// Create hero tile
-
 
 		}
 
@@ -208,7 +190,6 @@
 			colorizeTile(currentArrayColumn,currentArrayRow,"exit");// Call the tile colorisation function with the position of the tile in the array and its type. The function knows what colour to make it based on the description you are passing to it
 
 		}
-
 
 		public function checkTilesAroundHero()
 		{
