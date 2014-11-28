@@ -38,7 +38,7 @@
 
 			createGrassTiles();// Instantiate new grass tiles
 			// removeGrassTiles(); // This works
-			createMainPath();// Includes exit and hero tile on the path.
+			//createMainPath();// Includes exit and hero tile on the path.
 			// Scan and replace function?
 
 		}
@@ -56,16 +56,26 @@
 
 					// Bellow I am creating a single kind of green tile.
 
-					tileArray[i][j] = createTile(i,j,tileType);
+					//tileArray[i][j] = new tile(i,j,tileType);
+					createTile(i,j,tileType);
 
-					setTileSize(i,j);// Because many functions will be using this I don't want to keep rewriting so I made a function for it
-
+					//setTileSize(i,j);// Because many functions will be using this I don't want to keep rewriting so I made a function for it
+					trace("Item Created in Array in position: "+i,j,tileArray[i][j]) // Here is where the problem is, the array object at this point appears not to have been created yet. Yet the createTile function should have created and it is readable from that function. Is this a timing or a scope issue or something else?
+					
+					
+					/////////
+					///////// It appears that although the createTile function has executed succesfully and added the object to the array. The code below doesn't see that item in the array just yet.
+					/////////
+					
+					
+					trace(tileArray.length);
 					//trace(i,j);
 					tileArray[i][j].x +=  tileDistanceX;
 					tileArray[i][j].y +=  tileDistanceY;
 					tileDistanceY +=  aoz.tileSize;
+					trace(tileArray[i][j].x);
 
-					addChild(tileArray[i][j]);
+					//addChild(tileArray[i][j]);
 				}
 
 				tileDistanceY = 1;
@@ -167,7 +177,7 @@
 		}
 
 
-		public function createTile(column,row,type)
+		public function createTile(column,row,type):void
 		{
 
 			// X/Y position on screen of original tile to be replaced by exit tile
@@ -181,12 +191,16 @@
 				tileArray[column][row] = null;// Remove reference to object for garbage collector to collect it
 
 				// Assigning tile colour according to type
+				trace("I 'm inside the if statetement");
 			}
 			tileArray[column][row] = new tile(column,row,type);
-			trace("did it", column, row);
+			trace("I created the tile ", column, row, tileArray[column][row]);
 			tileArray[column][row].x = currentPosX;
 			tileArray[column][row].y = currentPosY;
+			trace("The x value of the tile is "+tileArray[column][row].x);
 			setTileSize(column,row);
+			
+			
 			addChild(tileArray[column][row]);
 
 			colorizeTile(column,row,type);// Call the tile colorisation function with the position of the tile in the array and its type. The function knows what colour to make it based on the description you are passing to it
@@ -220,6 +234,9 @@
 			{
 				tileArray[column][row].width = aoz.tileSize;
 				tileArray[column][row].height = aoz.tileSize;
+				trace("I am in setTileSize function now");
+				trace(column, row, tileArray[column][row]);
+				
 			}
 		}
 
@@ -256,6 +273,7 @@
 			*/
 
 			tileArray[column][row].transform.colorTransform = tileColor;
+			trace("I finished colorising now");
 
 		}
 
