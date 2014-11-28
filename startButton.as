@@ -21,6 +21,7 @@
 		this.addEventListener(MouseEvent.CLICK, clickHandler);
 
 	}
+	
 
 	function clickHandler(event: MouseEvent):void
 	{
