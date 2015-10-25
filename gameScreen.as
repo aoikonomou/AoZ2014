@@ -5,7 +5,7 @@
 	import tile;
 	import flash.display.InteractiveObject;
 	import flash.geom.ColorTransform;
-	import flashx.textLayout.operations.InsertTextOperation;
+	//import flashx.textLayout.operations.InsertTextOperation;
 
 	public class gameScreen extends MovieClip
 	{
